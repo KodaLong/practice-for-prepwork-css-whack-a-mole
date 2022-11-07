@@ -1,6 +1,6 @@
 let score = 0;
 let molesLeft = 30;
-let popupLength = 3000;
+let popupLength = 1500;
 let hideTimeout;
 let clickable = false;
 
@@ -11,8 +11,8 @@ function popUpRandomMole() {
   }
 
   const moleHeads = document.querySelectorAll('.wgs__mole-head:not(.wgs__mole-head--whacked)');
-  if (moleHeads.length === 0) {
-    return;
+ if (moleHeads.length === 0) {
+    alert("You win!");return;
   }
   const moleIndex = Math.floor(Math.random() * moleHeads.length);
   const moleHead = moleHeads[moleIndex];
@@ -40,19 +40,21 @@ window.addEventListener('DOMContentLoaded', () => {
   for (let moleHead of moleHeads) {
     moleHead.addEventListener('click', event => {
       if (!clickable) return;
-
+      moleHead.src='skull.png';
       score += 1;
-      document.querySelector('.sb__score').innerHTML = score;
+      if (score < 8) {
+        document.querySelector('.sb__score').innerHTML = score + " of 8";
+      } else document.querySelector('.sb__score').innerHTML = "WINNER!!!!";
       popupLength -= popupLength / 10;
 
       clearTimeout(hideTimeout);
       hideMole(event.target);
 
       // UNCOMMENT THIS LINE OF CODE WHEN DIRECTED
-      // event.target.classList.add('wgs__mole-head--hidden');
+      event.target.classList.add('wgs__mole-head--hidden');
 
       // UNCOMMENT THIS LINE OF CODE WHEN DIRECTED FOR THE BONUS
-      // event.target.classList.add('wgs__mole-head--whacked');
+      event.target.classList.add('wgs__mole-head--whacked');
     });
   }
 });
